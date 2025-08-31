@@ -13,6 +13,7 @@ A modern React frontend for the RideCo Grocery List application
 - **Framework**: React 18
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Component Library** - DaisyUI (Tailwind plugin with lots of pre-styled components.)
 - **State Management**: React Query (TanStack Query)
 - **HTTP Client**: Axios
 - **Build Tool**: Vite
