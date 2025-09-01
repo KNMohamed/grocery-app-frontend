@@ -64,7 +64,7 @@ This project follows modern React patterns with a focus on maintainability and t
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js (LTS) 20+ 
 - npm
 - Backend API running (see [backend repository](https://github.com/KNMohamed/grocery-app-backend))
 
@@ -87,7 +87,7 @@ npm run dev
 
 ### Environment Variables
 
-Create a `.env.local` file with the following variables:
+Create a `.env.local` file with the following variables, you can reference the `.env.example`:
 
 ```bash
 VITE_API_BASE_URL=http://localhost:5001/api/v1
