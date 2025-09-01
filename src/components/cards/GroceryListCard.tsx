@@ -136,7 +136,10 @@ const GroceryListCard: React.FC<GroceryListCardProps> = ({
 
         {/* Card actions */}
         <div className="card-actions justify-end">
-          <Link to={`/list/${list.id}`} className="btn btn-primary btn-sm text-gray-800">
+          <Link
+            to={`/list/${list.id}`}
+            className="btn btn-primary btn-sm text-white"
+          >
             View List
           </Link>
         </div>

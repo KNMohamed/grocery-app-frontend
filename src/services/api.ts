@@ -24,7 +24,6 @@ export const groceryListsApi = {
 
   // Create a new grocery list
   create: async (data: CreateGroceryListRequest): Promise<GroceryList> => {
-    console.log(JSON.stringify(data));
     const response = await fetch(`${API_BASE_URL}/grocery-lists`, {
       method: "POST",
       headers: {

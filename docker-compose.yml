@@ -1,0 +1,19 @@
+services:
+  grocery-app:
+    build: .
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      # Browser needs to use localhost, not Docker service names
+      - VITE_API_BASE_URL=http://localhost:5001/api/v1
+    stdin_open: true
+    tty: true
+    networks:
+      - grocery-shared-network
+
+networks:
+  grocery-shared-network:
+    external: true
