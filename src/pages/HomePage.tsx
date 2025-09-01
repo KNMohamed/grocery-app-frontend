@@ -7,6 +7,7 @@ import {
   useGroceryLists,
   useCreateGroceryList,
   useDeleteGroceryList,
+  useUpdateGroceryList,
 } from "../hooks/useGroceryLists";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -35,6 +36,7 @@ const HomePage: React.FC = () => {
   const { data: groceryLists = [], isLoading, error } = useGroceryLists();
   const createListMutation = useCreateGroceryList();
   const deleteListMutation = useDeleteGroceryList();
+  const updateListMutation = useUpdateGroceryList();
 
   /**
    * Creates a new grocery list and closes the modal on success
@@ -56,6 +58,17 @@ const HomePage: React.FC = () => {
       await deleteListMutation.mutateAsync(listId);
     } catch (error) {
       console.error("Failed to delete list:", error);
+    }
+  };
+
+  /**
+   * Updates a grocery list name
+   */
+  const updateList = async (listId: number, name: string) => {
+    try {
+      await updateListMutation.mutateAsync({ id: listId, data: { name } });
+    } catch (error) {
+      console.error("Failed to update list:", error);
     }
   };
 
@@ -156,7 +169,9 @@ const HomePage: React.FC = () => {
               key={list.id}
               list={list}
               onDelete={deleteList}
+              onUpdate={updateList}
               isDeleting={deleteListMutation.isPending}
+              isUpdating={updateListMutation.isPending}
             />
           ))}
         </div>

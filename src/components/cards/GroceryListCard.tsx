@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faPen } from "@fortawesome/free-solid-svg-icons";
 import type { GroceryList } from "../../types/grocery";
 import ProgressBar from "../progress/ProgressBar";
+import InlineEditInput from "../inputs/InlineEditInput";
 
 interface GroceryListCardProps {
   list: GroceryList;
   onDelete: (listId: number) => void;
+  onUpdate: (listId: number, name: string) => void;
   isDeleting?: boolean;
+  isUpdating?: boolean;
 }
 
 /**
@@ -17,13 +20,18 @@ interface GroceryListCardProps {
  * - Display list name and progress
  * - Show item statistics (total, purchased, not purchased)
  * - Delete functionality with loading state
+ * - Update functionality with loading state
  * - View list action button
  */
 const GroceryListCard: React.FC<GroceryListCardProps> = ({
   list,
   onDelete,
+  onUpdate,
   isDeleting = false,
+  isUpdating = false,
 }) => {
+  // State to show inline editing
+  const [isEditing, setIsEditing] = useState(false);
   /**
    * Calculates the completion percentage for the grocery list
    * @returns Progress percentage (0-100)
@@ -36,27 +44,70 @@ const GroceryListCard: React.FC<GroceryListCardProps> = ({
     return Math.round((completedItems / list.grocery_items.length) * 100);
   };
 
+  /**
+   * Handles starting the edit mode
+   */
+  const handleStartEdit = () => {
+    setIsEditing(true);
+  };
+
+  /**
+   * Handles saving the edited name
+   */
+  const handleSaveEdit = (newName: string) => {
+    onUpdate(list.id, newName);
+    setIsEditing(false);
+  };
+
+  /**
+   * Handles canceling the edit
+   */
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
   return (
     <div className="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-shadow">
       <div className="card-body">
         {/* Card header with title and actions menu */}
         <div className="flex justify-between items-start mb-4">
-          <h2 className="card-title text-lg">{list.name}</h2>
-          <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-sm btn-circle">
-              <FontAwesomeIcon icon={faEllipsisVertical} className="w-5 h-5" />
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-right"
-            >
-              <li>
-                <a className="text-error" onClick={() => onDelete(list.id)}>
-                  {isDeleting ? "Deleting..." : "Delete"}
-                </a>
-              </li>
-            </ul>
-          </div>
+          {isEditing ? (
+            <InlineEditInput
+              initialValue={list.name}
+              onSave={handleSaveEdit}
+              onCancel={handleCancelEdit}
+              isLoading={isUpdating}
+              placeholder="Enter list name"
+            />
+          ) : (
+            <>
+              <h2 className="card-title text-lg">{list.name}</h2>
+              <div className="dropdown dropdown-end">
+                <label tabIndex={0} className="btn btn-ghost btn-sm btn-circle">
+                  <FontAwesomeIcon
+                    icon={faEllipsisVertical}
+                    className="w-5 h-5"
+                  />
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-right"
+                >
+                  <li>
+                    <a onClick={handleStartEdit}>
+                      <FontAwesomeIcon icon={faPen} className="w-4 h-4" />
+                      {isUpdating ? "Updating..." : "Edit"}
+                    </a>
+                  </li>
+                  <li>
+                    <a className="text-error" onClick={() => onDelete(list.id)}>
+                      {isDeleting ? "Deleting..." : "Delete"}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Progress bar showing completion percentage */}

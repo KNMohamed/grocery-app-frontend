@@ -29,3 +29,15 @@ export const useDeleteGroceryList = () => {
     },
   });
 };
+
+export const useUpdateGroceryList = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: { name: string } }) =>
+      groceryListsApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["groceryLists"] });
+    },
+  });
+};
