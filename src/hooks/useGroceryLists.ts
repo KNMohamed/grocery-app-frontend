@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { groceryListsApi } from "../services/api";
-import type { GroceryList } from "../types/grocery";
 
 export const useGroceryLists = () => {
   return useQuery({
