@@ -43,3 +43,8 @@ export interface ApiError {
 export interface DeleteGroceryItemResponse {
   message: string;
 }
+
+export interface GroceryListItemsResponse {
+  grocery_list_name: string;
+  items: GroceryItem[];
+}

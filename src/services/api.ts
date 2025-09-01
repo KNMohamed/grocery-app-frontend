@@ -1,7 +1,12 @@
 import type {
   GroceryList,
+  GroceryItem,
   CreateGroceryListRequest,
   UpdateGroceryListRequest,
+  CreateGroceryItemRequest,
+  UpdateGroceryItemRequest,
+  GroceryListItemsResponse,
+  ApiError,
 } from "../types/grocery";
 
 const API_BASE_URL =
@@ -59,5 +64,102 @@ export const groceryListsApi = {
       throw new Error("Failed to update grocery list");
     }
     return response.json();
+  },
+
+  // Get a single grocery list
+  getById: async (id: number): Promise<GroceryList> => {
+    const response = await fetch(`${API_BASE_URL}/grocery-lists/${id}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch grocery list");
+    }
+    return response.json();
+  },
+};
+
+export const groceryItemsApi = {
+  // Get all items for a grocery list
+  getAll: async (listId: number): Promise<GroceryListItemsResponse> => {
+    const response = await fetch(
+      `${API_BASE_URL}/grocery-lists/${listId}/items`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      // Handle the case where grocery list doesn't exist
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      throw new Error("Failed to fetch grocery items");
+    }
+
+    return data;
+  },
+
+  // Create a new grocery item
+  create: async (
+    listId: number,
+    data: CreateGroceryItemRequest
+  ): Promise<GroceryItem> => {
+    const response = await fetch(
+      `${API_BASE_URL}/grocery-lists/${listId}/items`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to create grocery item");
+    }
+    return response.json();
+  },
+
+  // Update a grocery item
+  update: async (
+    _listId: number,
+    itemId: number,
+    data: UpdateGroceryItemRequest
+  ): Promise<GroceryItem> => {
+    const response = await fetch(`${API_BASE_URL}/grocery-items/${itemId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to update grocery item");
+    }
+    return response.json();
+  },
+
+  // Toggle purchase status
+  togglePurchased: async (
+    listId: number,
+    itemId: number
+  ): Promise<GroceryItem> => {
+    const response = await fetch(
+      `${API_BASE_URL}/grocery-lists/${listId}/items/${itemId}/toggle`,
+      {
+        method: "PATCH",
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to toggle item purchase status");
+    }
+    return response.json();
+  },
+
+  // Delete a grocery item
+  delete: async (itemId: number): Promise<void> => {
+    const response = await fetch(`${API_BASE_URL}/grocery-items/${itemId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Failed to delete grocery item");
+    }
   },
 };

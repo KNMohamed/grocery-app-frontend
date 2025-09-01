@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faPen } from "@fortawesome/free-solid-svg-icons";
 import type { GroceryList } from "../../types/grocery";
@@ -135,9 +136,9 @@ const GroceryListCard: React.FC<GroceryListCardProps> = ({
 
         {/* Card actions */}
         <div className="card-actions justify-end">
-          <button className="btn btn-primary btn-sm text-gray-800">
+          <Link to={`/list/${list.id}`} className="btn btn-primary btn-sm text-gray-800">
             View List
-          </button>
+          </Link>
         </div>
       </div>
     </div>
