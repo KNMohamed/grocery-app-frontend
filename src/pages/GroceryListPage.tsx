@@ -5,6 +5,7 @@ import { faPlus, faPen } from "@fortawesome/free-solid-svg-icons";
 import {
   useGroceryItems,
   useDeleteGroceryItem,
+  useTogglePurchaseItem,
 } from "../hooks/useGroceryItems";
 import ProgressBar from "../components/progress/ProgressBar";
 import ItemFormModal from "../components/modals/ItemFormModal";
@@ -31,6 +32,7 @@ const GroceryListPage: React.FC = () => {
   } = useGroceryItems(listId || 0);
 
   const deleteItemMutation = useDeleteGroceryItem(listId || 0);
+  const togglePurchaseMutation = useTogglePurchaseItem(listId || 0);
 
   // Extract data from query result
   const items = data?.items || [];
@@ -45,6 +47,10 @@ const GroceryListPage: React.FC = () => {
 
   const handleDeleteItem = (itemId: number) => {
     deleteItemMutation.mutate(itemId);
+  };
+
+  const handleTogglePurchase = (itemId: number, isPurchased: boolean) => {
+    togglePurchaseMutation.mutate({ itemId, isPurchased });
   };
 
   const handleAddItem = () => {
@@ -117,7 +123,10 @@ const GroceryListPage: React.FC = () => {
 
       {/* Add Item Button */}
       <div className="mb-6 text-gray-800">
-        <button onClick={handleAddItem} className="btn btn-primary text-gray-800">
+        <button
+          onClick={handleAddItem}
+          className="btn btn-primary text-gray-800"
+        >
           <FontAwesomeIcon icon={faPlus} className="w-4 h-4" />
           Add Item
         </button>
@@ -141,15 +150,15 @@ const GroceryListPage: React.FC = () => {
                         type="checkbox"
                         className="checkbox checkbox-primary"
                         checked={false}
-                        onChange={() => console.log("Purchased")}
+                        onChange={() =>
+                          handleTogglePurchase(item.id, item.is_purchased)
+                        }
                       />
                       <div className="flex-1">
                         <p>{item.name}</p>
                       </div>
                       Qty:
-                      <div className="badge badge-outline">
-                        {item.quantity}
-                      </div>
+                      <div className="badge badge-outline">{item.quantity}</div>
                       <button
                         onClick={() => handleEditItem(item)}
                         className="btn btn-ghost btn-sm btn-square"
@@ -190,15 +199,15 @@ const GroceryListPage: React.FC = () => {
                         type="checkbox"
                         className="checkbox checkbox-primary"
                         checked={true}
-                        onChange={() => console.log("Unpurchased")}
+                        onChange={() =>
+                          handleTogglePurchase(item.id, item.is_purchased)
+                        }
                       />
                       <div className="flex-1">
                         <p className="line-through">{item.name}</p>
                       </div>
                       Qty:
-                      <div className="badge badge-outline">
-                        {item.quantity}
-                      </div>
+                      <div className="badge badge-outline">{item.quantity}</div>
                       <button
                         onClick={() => handleEditItem(item)}
                         className="btn btn-ghost btn-sm btn-square"

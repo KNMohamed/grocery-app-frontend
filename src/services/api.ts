@@ -136,19 +136,36 @@ export const groceryItemsApi = {
     return response.json();
   },
 
-  // Toggle purchase status
-  togglePurchased: async (
-    listId: number,
-    itemId: number
-  ): Promise<GroceryItem> => {
+  // Purchase item
+  purchaseItem: async (itemId: number): Promise<GroceryItem> => {
     const response = await fetch(
-      `${API_BASE_URL}/grocery-lists/${listId}/items/${itemId}/toggle`,
+      `${API_BASE_URL}/grocery-items/${itemId}/purchase`,
       {
-        method: "PATCH",
+        method: "POST",
       }
     );
     if (!response.ok) {
-      throw new Error("Failed to toggle item purchase status");
+      if (response.status === 404) {
+        throw new Error("Grocery item not found");
+      }
+      throw new Error("Failed to purchase item");
+    }
+    return response.json();
+  },
+
+  // Unpurchase item
+  unpurchaseItem: async (itemId: number): Promise<GroceryItem> => {
+    const response = await fetch(
+      `${API_BASE_URL}/grocery-items/${itemId}/unpurchase`,
+      {
+        method: "POST",
+      }
+    );
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error("Grocery item not found");
+      }
+      throw new Error("Failed to unpurchase item");
     }
     return response.json();
   },

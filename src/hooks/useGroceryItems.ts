@@ -63,3 +63,19 @@ export const useDeleteGroceryItem = (listId: number) => {
     },
   });
 };
+
+export const useTogglePurchaseItem = (listId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ itemId, isPurchased }: { itemId: number; isPurchased: boolean }) => {
+      return isPurchased 
+        ? groceryItemsApi.unpurchaseItem(itemId)
+        : groceryItemsApi.purchaseItem(itemId);
+    },
+    onSuccess: () => {
+      // Invalidate the specific grocery items query for this list
+      queryClient.invalidateQueries({ queryKey: ["groceryItems", listId] });
+    },
+  });
+};
