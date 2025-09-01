@@ -110,46 +110,34 @@ npm run format           # Format code with Prettier
 npm run type-check       # Run TypeScript type checking
 ```
 
-## Testing
+## Docker Setup
 
-The project uses Vitest and React Testing Library for testing:
+You can run the application using Docker for a consistent development environment.
 
-```bash
-# Run all tests
-npm run test
+### Prerequisites for Docker
 
-# Run tests with coverage
-npm run test:coverage
+- Docker and Docker Compose installed
+- Backend API running in Docker (see [backend repository](https://github.com/KNMohamed/grocery-app-backend))
 
-# Run specific test files
-npm run test -- components/GroceryList.test.tsx
-```
-
-### Test Structure
-
-- **Unit Tests**: Individual component and utility function tests
-- **Integration Tests**: Multi-component interaction tests
-
-## Deployment
-
-### Production Build
+### Running with Docker
 
 ```bash
-# Build the application
-npm run build
+# Make sure the backend is running first
+# Follow the Docker setup instructions in the backend repository
 
-# The build artifacts will be stored in the `dist/` directory
+# Build and start the frontend container
+docker-compose up --build
+
+# Or run in detached mode
+docker-compose up -d --build
+
+# Stop the containers
+docker-compose down
 ```
 
-### Docker Deployment
+The application will be available at `http://localhost:5173` when running with Docker.
 
-```bash
-# Build Docker image
-docker build -t grocery-app-frontend .
-
-# Run container
-docker run -p 3000:80 grocery-app-frontend
-```
+**Note**: The backend dockerized application must be running first before starting the frontend Docker container, as the frontend depends on the backend API.
 
 ## API Integration
 
