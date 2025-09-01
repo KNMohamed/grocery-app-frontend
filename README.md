@@ -13,6 +13,7 @@ A modern React frontend for the RideCo Grocery List application
 - **Framework**: React 18
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Iconography** - FontAwesome
 - **Component Library** - DaisyUI (Tailwind plugin with lots of pre-styled components.)
 - **State Management**: React Query (TanStack Query)
 - **HTTP Client**: Axios
@@ -32,17 +33,14 @@ This project follows modern React patterns with a focus on maintainability and t
 │   ├── components/        # Reusable UI components
 │   │   ├── ui/           # Base UI components (Button, Input, etc.)
 │   │   └── grocery/      # Grocery-specific components
-│   ├── pages/            # Page components and routing
+│   ├── pages/            # Page components
 │   ├── hooks/            # Custom React hooks
 │   ├── services/         # API service layer
 │   ├── types/            # TypeScript type definitions
 │   ├── utils/            # Utility functions
-│   └── styles/           # Global styles and Tailwind config
 ├── public/               # Static assets
 ├── tests/                # Test suite
-│   ├── __mocks__/       # Test mocks
 │   ├── components/      # Component tests
-│   └── integration/     # Integration tests
 ├── .env.example          # Environment variables template
 └── ...
 ```

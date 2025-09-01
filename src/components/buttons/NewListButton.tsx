@@ -13,7 +13,7 @@ const NewListButton: React.FC<NewListButtonProps> = ({
 }) => {
   return (
     <button
-      className={`btn btn-primary btn-${size} ${className}`}
+      className={`btn btn-primary btn-${size} text-gray-800 ${className}`}
       onClick={onClick}
     >
       <svg
